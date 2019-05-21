@@ -1,0 +1,24 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /(.*\.(html|gz|js|css|png|jpg|svg|ttf|ico|json))
+  static_files: dist/\1
+  upload: dist/(.*\.(html|gz|js|css|png|jpg|svg|ttf|ico|json))
+
+- url: /.*
+  static_files: dist/index.html
+  upload: dist/index.html
+  secure: always
+
+skip_files:
+- app/
+- node_modules/
+- ^\.git/.*
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?.*\.bak$

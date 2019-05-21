@@ -1,0 +1,90 @@
+#app-toolbar {
+  .v-toolbar__items {
+    .v-btn {
+      font-size: 16px;
+      text-transform: capitalize;
+      font-weight: 300
+    }
+  }
+}
+
+.v-stepper__header {
+  height: auto;
+}
+
+.of-sticky {
+  position: sticky;
+  background-color: #fff;
+
+  &.of-y {
+    z-index: 2;
+    top: 0;
+    bottom: 0
+  }
+
+  &.of-x {
+    left: 0;
+    right: 0;
+    z-index: 3;
+  }
+
+  &.of-x.of-y {
+    z-index: 4;
+  }
+}
+
+.of-text-overflow {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.of-no-shadow {
+  box-shadow: none;
+}
+
+:focus {
+  outline: none;
+}
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
