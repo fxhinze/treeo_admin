@@ -7,10 +7,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
-    "build-stage": "vue-cli-service build --mode stage --modern --no-fix",
-    "build-test": "vue-cli-service build --mode test --modern --no-fix",
-    "build-master": "vue-cli-service build --mode master --modern --no-fix",
+    "build": "vue-cli-service build --modern --no-fix",
     "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
