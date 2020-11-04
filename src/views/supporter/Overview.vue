@@ -5,13 +5,29 @@
         <v-toolbar-side-icon @click="goToItem('supporters')">
           <v-icon>arrow_back</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title>SUPPORTER OVERVIEW</v-toolbar-title>
+
+        <v-toolbar-title v-text="'SUPPORTER OVERVIEW'" />
 
         <v-spacer />
 
-        <div v-if="!supporter" class="subheading">Loading...</div>
-        <v-btn v-if="supporter" flat @click="editPopup = true">Edit Supporter</v-btn>
+        <div
+          v-if="loading"
+          class="subheading"
+          v-text="'Loading...'"
+        />
+
+        <template v-else>
+          <v-btn flat @click="editPopup = true">
+            <span v-text="'Edit Supporter'" />
+          </v-btn>
+
+          <v-btn depressed color="error" @click="deletePopup = true">
+            <span v-text="'Delete'" />
+            <v-icon right small>delete</v-icon>
+          </v-btn>
+        </template>
       </v-toolbar>
+
       <v-divider />
     </div>
 
@@ -34,11 +50,11 @@
     </transition>
 
     <popup-component
+      v-model="editPopup"
       title="EDIT SUPPORTER"
       cancel-label="Cancel"
       confirm-label="Save"
-      :has-content="true"
-      v-model="editPopup"
+      has-content
       @action:confirm="$refs.editForm.submit()"
     >
       <form-component
@@ -50,6 +66,18 @@
         hide-actions
       />
     </popup-component>
+
+    <popup-component
+      v-model="deletePopup"
+      title="DELETE FARMER"
+      toolbar-dark
+      toolbar-color="blue-grey darken-3"
+      cancel-label="Cancel"
+      confirm-label="Delete"
+      confirm-color="error"
+      max-width="400"
+      @action:confirm="deleteItem(id).then(() => goToItem())"
+    />
   </div>
 </template>
 
@@ -103,6 +131,7 @@ export default {
       showDetails: false,
       routeFrom: null,
       editPopup: false,
+      deletePopup: false,
     }
   },
 
@@ -122,12 +151,17 @@ export default {
         top: this.toolbarTop + 'px',
       }
     },
+
+    loading () {
+      return !this.supporter
+    },
   },
 
   methods: {
     ...mapActions('supporter', {
       fetch: 'fetchItem',
       clearItem: 'clearItem',
+      deleteItem: 'deleteItem',
     }),
 
     setRoute (routeTo, routeFrom) {
@@ -138,15 +172,21 @@ export default {
       this.routeFrom = routeFrom
     },
 
-    goToItem (name) {
-      if (this.routeFrom && !this.routeFrom.matched.some(route => route.name === name)) {
-        this.$router.go(-1)
-      } else {
-        let route = routerHelpers.getRouteByName(this.$router.options.routes, name)
-        route.query = routerHelpers.getCachedQuery(route)
-
-        this.$router.push(route)
+    goToItem (name = null) {
+      if (!name) {
+        return this.$router.push({
+          name: 'supporter-table'
+        })
       }
+
+      if (this.routeFrom && !this.routeFrom.matched.some(route => route.name === name)) {
+        return this.$router.go(-1)
+      }
+
+      let route = routerHelpers.getRouteByName(this.$router.options.routes, name)
+      route.query = routerHelpers.getCachedQuery(route)
+
+      return this.$router.push(route)
     },
 
     onEnter () {

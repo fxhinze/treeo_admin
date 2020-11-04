@@ -255,7 +255,10 @@ export default {
 
       this.draw = new MapboxDraw({
         displayControlsDefault: false,
-        controls: {}
+        keybindings: true,
+        controls: {
+          trash: true,
+        }
       })
 
       this.map.addControl(this.draw)
@@ -369,3 +372,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.mapbox-gl-draw_ctrl-draw-btn.mapbox-gl-draw_trash {
+  display: none;
+}
+</style>

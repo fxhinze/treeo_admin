@@ -10,6 +10,7 @@
     router-name-on-forward="plot-overview"
     :form-component="form"
     :chart-component="chart"
+    :download-component="download"
   />
 </template>
 
@@ -17,6 +18,7 @@
 import DatatableWrapperComponent from '@/components/DatatableComplexWrapper'
 import FormComponent from './Form'
 import ChartPlotComponent from './ChartPlot'
+import DownloadComponent from './Download'
 
 import datatableConfig from './../datatable'
 
@@ -30,6 +32,7 @@ export default {
       config: datatableConfig,
       form: FormComponent,
       chart: ChartPlotComponent,
+      download: DownloadComponent,
     }
   },
 }

@@ -53,13 +53,13 @@ export default {
   },
 
   computed: {
-    ...mapState('nursery', {
+    ...mapState('plot', {
       photos: state => state.gallery,
     }),
   },
 
   methods: {
-    ...mapActions('nursery', {
+    ...mapActions('plot', {
       fetchGallery: 'fetchGallery',
       uploadGalleryPhotos: 'uploadGalleryPhotos',
       updateGalleryPhotos: 'updateGalleryPhotos',

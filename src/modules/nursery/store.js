@@ -218,6 +218,29 @@ export const actions = {
     }
   },
 
+  async updateGalleryPhotos ({ commit, state }, payload) {
+    const originals = state.gallery
+
+    commit('SET_GALLERY', payload.items)
+
+    try {
+      const params = {
+        nursery_id: payload.id,
+        album: payload.items.map(item => item.id)
+      }
+
+      const response = await service.post('/album/order', params)
+
+      commit('SET_GALLERY', response.data.data)
+
+      return Promise.resolve(response.data)
+    } catch (error) {
+      commit('SET_GALLERY', originals)
+
+      return Promise.reject(error)
+    }
+  },
+
   async updateGalleryPhoto ({ commit }, payload) {
     try {
       const params = {

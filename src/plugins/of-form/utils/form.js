@@ -117,10 +117,14 @@ export default class Form {
     let values = {}
     this.fields.forEach(field => {
       let value = field.getValue()
-      if (value || field.empty) {
-        values[field.getName()] = value || ''
-      } else if (typeof value === 'boolean') {
-        values[field.getName()] = value ? 1 : 0
+      let name = field.getName()
+
+      if (typeof value === 'boolean') {
+        values[name] = value ? 1 : 0
+      } else if (value || field.empty) {
+        values[name] = value || ''
+      } else {
+        values[name] = ''
       }
     })
     return values

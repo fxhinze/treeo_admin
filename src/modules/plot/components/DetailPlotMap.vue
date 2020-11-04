@@ -154,6 +154,7 @@ export default {
       parseGeojson: 'parseGeojson',
       updatePlotPolygon: 'updatePlotPolygon',
       generatePlot: 'generatePlotMap',
+      forcePlot: 'forcePlotMap',
     }),
 
     editPlotOnMap () {
@@ -193,9 +194,34 @@ export default {
     },
 
     generatePlotMap () {
+      if (!this.id) return
+
+      this.generatePlot(this.id)
+        .then(response => {
+          const polygon = response.polygon
+          this.polygonFeatures = polygon ? [feature(polygon)] : []
+
+          this.loading = false
+
+          this.fitInitalBounds()
+        })
+        .catch(response => {
+          if (
+            response !== undefined &&
+            response.hasOwnProperty('response') &&
+            response.response.hasOwnProperty('data')
+          ) {
+            const errorObj = response.response.data
+
+            this.errorMessage = errorObj.message || 'Error!'
+          }
+        })
+    },
+
+    forcePlotMap () {
       if (!this.lastSurvey) return
 
-      this.generatePlot(this.lastSurvey.id)
+      this.forcePlot(this.lastSurvey.id)
         .then(response => {
           const polygon = response.polygon
           this.polygonFeatures = polygon ? [feature(polygon)] : []

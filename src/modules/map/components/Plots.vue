@@ -103,6 +103,7 @@ export default {
 
       this.removeEvents()
 
+      // remove popups
       this.onMouseLeaveFeature()
     },
 

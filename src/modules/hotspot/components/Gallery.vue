@@ -2,8 +2,10 @@
   <gallery-container-component
     :id="id"
     :loading="loading"
+    :updating="updating"
     :items="photos"
     :action-upload="uploadGalleryPhotos"
+    @update:items="updateItems"
   >
     <gallery-item-component
       slot-scope="{ grid, id, photoId, photo, caption }"
@@ -46,6 +48,7 @@ export default {
   data () {
     return {
       loading: true,
+      updating: false,
     }
   },
 
@@ -59,9 +62,21 @@ export default {
     ...mapActions('hotspot', {
       fetchGallery: 'fetchGallery',
       uploadGalleryPhotos: 'uploadGalleryPhotos',
+      updateGalleryPhotos: 'updateGalleryPhotos',
       updateGalleryPhoto: 'updateGalleryPhoto',
       deleteGalleryPhoto: 'deleteGalleryPhoto',
     }),
+
+    async updateItems (items) {
+      this.updating = true
+
+      await this.updateGalleryPhotos({
+        id: this.id,
+        items: items,
+      })
+
+      this.updating = false
+    },
   },
 }
 </script>

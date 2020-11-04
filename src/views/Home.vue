@@ -5,7 +5,6 @@
         <v-card class="elevation-12 pa-3">
           <div class="pa-2">
             <div class="title mb-3">Welcome to the TREEO administration tool!</div>
-            <div class="body mb-3">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</div>
           </div>
           <v-card-actions>
             <template v-if="loggedIn">

@@ -108,6 +108,9 @@ export default {
     fetchFarmers () {
       api.farmer.getFilteredItems({
         limit: 1,
+        // query: [
+        //   { field: 'email', type: 'empty', value: 1 },
+        // ]
       }).then(({ meta }) => {
         this.farmer.totalCount = meta.pagination.total
       })

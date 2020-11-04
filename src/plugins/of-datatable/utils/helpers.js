@@ -57,6 +57,7 @@ function createColumn (column) {
     searchable: column.hasOwnProperty('searchable') ? column.searchable : true,
     resizable: column.hasOwnProperty('resizable') ? column.resizable : true,
     filterable: column.hasOwnProperty('filterable') ? column.filterable : true,
+    // fixedColumn: column.hasOwnProperty('fixedColumn') ? column.fixedColumn : false,
     fixedColumn: false,
     filterType: column.hasOwnProperty('filterType') ? column.filterType : 'text',
     filterTypes: column.hasOwnProperty('filterTypes') ? column.filterTypes : ['text', 'bool'],

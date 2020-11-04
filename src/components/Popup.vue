@@ -1,4 +1,5 @@
 <template>
+  <!-- <div v-if="createPopup"> -->
   <div>
     <template v-if="mode === 'modal' && createPopup">
       <v-dialog v-model="editPopup" lazy :max-width="maxWidth" persistent :scrollable="hasContent">
@@ -17,6 +18,8 @@
             <slot />
           </v-card-text>
 
+          <slot v-if="!hasContent" />
+
           <v-divider v-if="hasContent" />
 
           <v-card-actions>
@@ -25,7 +28,7 @@
             </v-btn>
             <v-spacer></v-spacer>
 
-            <v-btn v-if="!hideConfirmBtn" :disabled="confirmDisabled" :color="confirmColor" @click="onConfirm" :loading="false">
+            <v-btn v-if="!hideConfirmBtn" :disabled="confirmDisabled" :color="confirmColor" @click="onConfirm" :loading="loading">
               {{ confirmLabel }}
               <span slot="loader" class="custom-loader">
                 <v-icon light>cached</v-icon>
@@ -128,6 +131,7 @@ export default {
 
   data () {
     return {
+      loading: false,
       createPopup: false,
       editPopup: false
     }

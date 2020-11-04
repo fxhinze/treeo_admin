@@ -1,3 +1,7 @@
+import Vue from 'vue'
+
+import service from '@/utils/request'
+
 import api from '@/api'
 
 export const namespaced = true
@@ -16,6 +20,7 @@ export const state = {
   item: null,
   items: [],
   meta: {},
+  gallery: [],
   farmers: [],
   projects: [],
   species: [],
@@ -48,6 +53,19 @@ export const mutations = {
 
   SET_META (state, meta) {
     state.meta = meta
+  },
+
+  SET_GALLERY (state, photos) {
+    state.gallery = photos
+  },
+
+  SET_GALLERY_PHOTO (state, photo) {
+    const index = state.gallery.findIndex(item => item.id === photo.id)
+
+    Vue.set(state.gallery, index, {
+      ...state.gallery[index],
+      ...photo,
+    })
   },
 
   SET_FARMERS (state, farmers) {
@@ -216,8 +234,114 @@ export const actions = {
     if (!id) return Promise.resolve()
 
     return api.plot.generatePolygon({
+      id: id
+    }).then(response => response.data.data)
+  },
+
+  forcePlotMap ({ commit }, id) {
+    if (!id) return Promise.resolve()
+
+    return api.plot.forcePolygon({
       survey_id: id
     }).then(response => response.data.data)
+  },
+
+  fetchGallery ({ commit }, id) {
+    return service.get('/album', {
+      params: { plot_id: id },
+    }).then(response => {
+      commit('SET_GALLERY', response.data.data)
+    })
+  },
+
+  async uploadGalleryPhotos ({ dispatch }, payload) {
+    try {
+      const data = payload.data
+      data.append('plot_id', data.get('id'))
+      data.delete('id')
+
+      await service.request({
+        url: '/album/upload',
+        method: 'post',
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: data,
+        onUploadProgress: payload.callback
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+
+    try {
+      await dispatch('fetchGallery', payload.data.get('plot_id'))
+
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async updateGalleryPhotos ({ commit, state }, payload) {
+    const originals = state.gallery
+
+    commit('SET_GALLERY', payload.items)
+
+    try {
+      const params = {
+        plot_id: payload.id,
+        album: payload.items.map(item => item.id)
+      }
+
+      const response = await service.post('/album/order', params)
+
+      commit('SET_GALLERY', response.data.data)
+
+      return Promise.resolve(response.data)
+    } catch (error) {
+      commit('SET_GALLERY', originals)
+
+      return Promise.reject(error)
+    }
+  },
+
+  async updateGalleryPhoto ({ commit }, payload) {
+    try {
+      const params = {
+        id: payload.photoId,
+        plot_id: payload.id,
+        caption: payload.caption,
+      }
+
+      const response = await service.patch('/album', params)
+
+      commit('SET_GALLERY_PHOTO', response.data.data)
+
+      return Promise.resolve(response.data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async deleteGalleryPhoto ({ dispatch }, payload) {
+    try {
+      const params = {
+        id: payload.photoId,
+        plot_id: payload.id,
+      }
+
+      await service.delete('/album', { params: params })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+
+    try {
+      await dispatch('fetchGallery', payload.id)
+
+      return Promise.resolve()
+    } catch (error) {
+      return Promise.reject(error)
+    }
   },
 
   fetchFarmers ({ commit, state }) {
@@ -393,14 +517,15 @@ export const actions = {
 
   clearItem ({ commit }) {
     commit('SET_ITEM', null)
+    commit('SET_GALLERY', [])
   },
 
   clearSurveys ({ commit }) {
     commit('SET_SURVEYS', [])
   },
 
-  clear ({ commit }) {
-    commit('SET_ITEM', null)
+  clear ({ commit, dispatch }) {
+    dispatch('clearItem')
     commit('SET_ITEMS', [])
     commit('SET_FARMERS', [])
     commit('SET_PROJECTS', [])

@@ -11,18 +11,5 @@ export default {
   components: {
     TableComponent
   },
-
-  data () {
-    return {
-    }
-  },
-
-  mounted () {
-  },
-
-  watch: {
-    $route (to, from) {
-    }
-  }
 }
 </script>

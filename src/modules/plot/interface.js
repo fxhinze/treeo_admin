@@ -10,7 +10,7 @@ export class Plot extends Item {
       ...this.createProperty(item, 'farmer'),
       ...this.createProperty(item, 'polygon_id'),
       ...this.createProperty(item, 'farmer_id'),
-      ...this.createProperty(item, 'area_m2'),
+      ...this.createNumber(item, 'area_m2', 0),
       ...this.createProperty(item, 'project'),
       ...this.createProperty(item, 'species_id'),
       ...this.createProperty(item, 'species'),

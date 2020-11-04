@@ -37,16 +37,37 @@
             flat
           ></v-select>
         </div>
-        <v-btn icon v-if="hideActionChart" @click="$emit('action:chart')">
-          <v-icon>show_chart</v-icon>
-        </v-btn>
+
         <v-btn icon @click="searchBar = !searchBar">
           <v-icon :color="searchBar ? 'primary' : ''">filter_list</v-icon>
         </v-btn>
 
-        <v-btn icon @click="$emit('fetchData', true)" :loading="loading">
-          <v-icon>refresh</v-icon>
-        </v-btn>
+        <v-tooltip v-if="hideActionChart" top>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon @click="$emit('action:chart')">
+              <v-icon>show_chart</v-icon>
+            </v-btn>
+          </template>
+          <span>Statistics</span>
+        </v-tooltip>
+
+        <v-tooltip v-if="hideActionDownload" top>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon @click="$emit('action:download')">
+              <v-icon>cloud_download</v-icon>
+            </v-btn>
+          </template>
+          <span>Download data as csv</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" icon @click="$emit('fetchData', true)" :loading="loading">
+              <v-icon>refresh</v-icon>
+            </v-btn>
+          </template>
+          <span>Reload</span>
+        </v-tooltip>
 
         <v-btn icon disabled>
           <v-icon>more_vert</v-icon>
@@ -202,6 +223,11 @@ export default {
     },
 
     hideActionChart: {
+      type: Boolean,
+      default: false,
+    },
+
+    hideActionDownload: {
       type: Boolean,
       default: false,
     },

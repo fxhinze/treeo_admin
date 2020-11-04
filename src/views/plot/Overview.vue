@@ -5,13 +5,29 @@
         <v-toolbar-side-icon @click="goToItem('plots')">
           <v-icon>arrow_back</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title>PLOT OVERVIEW</v-toolbar-title>
+
+        <v-toolbar-title v-text="'PLOT OVERVIEW'" />
 
         <v-spacer />
 
-        <div v-if="!plot" class="subheading">Loading...</div>
-        <v-btn v-if="plot" flat @click="editPopup = true">Edit Plot</v-btn>
+        <div
+          v-if="loading"
+          class="subheading"
+          v-text="'Loading...'"
+        />
+
+        <template v-else>
+          <v-btn flat @click="editPopup = true">
+            <span v-text="'Edit Plot'" />
+          </v-btn>
+
+          <v-btn depressed color="error" @click="deletePopup = true">
+            <span v-text="'Delete'" />
+            <v-icon right small>delete</v-icon>
+          </v-btn>
+        </template>
       </v-toolbar>
+
       <v-divider />
     </div>
 
@@ -35,17 +51,21 @@
             <v-card tile class="mt-4">
               <detail-plot-map-component :id="id" />
             </v-card>
+
+            <v-card tile class="mt-4">
+              <gallery-component :id="id" />
+            </v-card>
           </v-flex>
         </v-layout>
       </v-container>
     </transition>
 
     <popup-component
+      v-model="editPopup"
       title="EDIT PLOT"
       cancel-label="Cancel"
       confirm-label="Save"
-      :has-content="true"
-      v-model="editPopup"
+      has-content
       @action:confirm="$refs.editForm.submit()"
     >
       <form-component
@@ -57,6 +77,18 @@
         hide-actions
       />
     </popup-component>
+
+    <popup-component
+      v-model="deletePopup"
+      title="DELETE PLOT"
+      toolbar-dark
+      toolbar-color="blue-grey darken-3"
+      cancel-label="Cancel"
+      confirm-label="Delete"
+      confirm-color="error"
+      max-width="400"
+      @action:confirm="deleteItem(id).then(() => goToItem())"
+    />
   </div>
 </template>
 
@@ -71,6 +103,7 @@ import FormComponent from '@/modules/plot/components/Form'
 import DetailListComponenent from '@/modules/plot/components/DetailList'
 import DetailSurveyTableComponent from '@/modules/plot/components/DetailSurveyTable'
 import DetailPlotMapComponent from '@/modules/plot/components/DetailPlotMap'
+import GalleryComponent from '@/modules/plot/components/Gallery'
 
 export default {
   name: 'plot-overview',
@@ -85,6 +118,7 @@ export default {
     DetailListComponenent,
     DetailSurveyTableComponent,
     DetailPlotMapComponent,
+    GalleryComponent,
   },
 
   props: {
@@ -113,6 +147,7 @@ export default {
       showDetails: false,
       routeFrom: null,
       editPopup: false,
+      deletePopup: false,
     }
   },
 
@@ -132,6 +167,10 @@ export default {
         top: this.toolbarTop + 'px',
       }
     },
+
+    loading () {
+      return !this.plot
+    },
   },
 
   methods: {
@@ -139,6 +178,7 @@ export default {
       fetch: 'fetchItem',
       clearItem: 'clearItem',
       clearSurveys: 'clearSurveys',
+      deleteItem: 'deleteItem',
     }),
 
     setRoute (routeTo, routeFrom) {
@@ -149,15 +189,21 @@ export default {
       this.routeFrom = routeFrom
     },
 
-    goToItem (name) {
-      if (this.routeFrom && !this.routeFrom.matched.some(route => route.name === name)) {
-        this.$router.go(-1)
-      } else {
-        let route = routerHelpers.getRouteByName(this.$router.options.routes, name)
-        route.query = routerHelpers.getCachedQuery(route)
-
-        this.$router.push(route)
+    goToItem (name = null) {
+      if (!name) {
+        return this.$router.push({
+          name: 'plot-table'
+        })
       }
+
+      if (this.routeFrom && !this.routeFrom.matched.some(route => route.name === name)) {
+        return this.$router.go(-1)
+      }
+
+      let route = routerHelpers.getRouteByName(this.$router.options.routes, name)
+      route.query = routerHelpers.getCachedQuery(route)
+
+      return this.$router.push(route)
     },
 
     onEnter () {

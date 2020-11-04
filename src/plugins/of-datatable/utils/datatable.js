@@ -287,6 +287,7 @@ export default class Datatable {
     return {
       ...this.query,
       query: this.filter.getSelectedItemsForApi()
+      // search: this.searchValue
     }
   }
 

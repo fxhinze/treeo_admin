@@ -1,6 +1,7 @@
 import globalModule from './global'
 import authModule from './auth'
 
+// import datatableModule from '@/modules/datatable/store'
 import mapModule from '@/modules/map/store'
 
 // Main tables
@@ -28,6 +29,7 @@ const modules = {
   global: globalModule,
   auth: authModule,
 
+  // datatable: datatableModule,
   map: mapModule,
 
   farmer: farmerModule,

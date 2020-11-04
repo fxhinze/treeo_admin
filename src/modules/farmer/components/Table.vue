@@ -8,12 +8,14 @@
     router-name-on-create="farmer-create"
     router-name-on-forward="farmer-overview"
     :form-component="form"
+    :download-component="download"
   />
 </template>
 
 <script>
 import DatatableWrapperComponent from '@/components/DatatableComplexWrapper'
 import FormComponent from './Form'
+import DownloadComponent from './Download'
 
 import datatableConfig from './../datatable'
 
@@ -26,6 +28,7 @@ export default {
     return {
       config: datatableConfig,
       form: FormComponent,
+      download: DownloadComponent,
     }
   }
 }

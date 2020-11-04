@@ -8,6 +8,7 @@
               slot-scope="{ src }"
               :src="src"
               :width="grid ? 'auto' : '200px'"
+              :class="{ 'ma-2': grid }"
               aspect-ratio="1"
               class="grey lighten-2"
             >

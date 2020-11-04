@@ -48,10 +48,12 @@ export const columns = [
     width: 100,
     textAlign: 'right',
     filterTypes: [
+      // { name: 'number_range', label: 'Number Range', range: [0, 500] },
       { name: 'number_range', label: 'Number Range' },
       { name: 'number', label: 'Number' },
       { name: 'empty', label: 'Empty' },
     ],
+    // filterRange: [0, 500],
   },
   {
     name: 'species',

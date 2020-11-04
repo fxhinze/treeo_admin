@@ -8,10 +8,23 @@ export const columns = [
   {
     name: 'identifier',
     label: 'ID',
-    width: 100,
+    width: 80,
     fixedColumn: true,
     type: 'link',
     link: { name: 'farmer-overview', id: 'identifier' },
+  },
+  {
+    name: 'name',
+    label: 'Name',
+    width: 180,
+  },
+  {
+    name: 'photo',
+    label: 'Photo',
+    width: 60,
+    type: 'image',
+    sortable: false,
+    filterable: false,
   },
   {
     name: 'user_id',
@@ -24,19 +37,6 @@ export const columns = [
     width: 200,
     type: 'link',
     link: { name: 'user-overview', id: 'user_id' },
-  },
-  {
-    name: 'photo',
-    label: 'Photo',
-    width: 60,
-    type: 'image',
-    sortable: false,
-    filterable: false,
-  },
-  {
-    name: 'name',
-    label: 'Name',
-    width: 180,
   },
   {
     name: 'project',

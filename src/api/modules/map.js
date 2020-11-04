@@ -12,8 +12,6 @@ const service = axios.create()
 // - CanvasGray - A grayscale version of the road maps.
 // - Road – Roads without additional imagery.
 
-const LOAD_ASYNC = process.env.VUE_APP_MAP_LOAD_ASYNC
-
 const bing = {
   fetchSource: async style => {
     const key = process.env.VUE_APP_MAP_BING_TOKEN
@@ -89,27 +87,16 @@ const api = {
         tileSize: 256,
       }
 
-      if (JSON.parse(LOAD_ASYNC)) {
-        if (bing.getTiles('bing_satellite')) {
-          data.tiles = bing.getTiles('bing_satellite')
-
-          resolve(data)
-        } else {
-          bing.fetchSource('Aerial').then(tiles => {
-            data.tiles = bing.setTiles('bing_satellite', tiles)
-
-            resolve(data)
-          })
-        }
-      } else {
-        data.tiles = [
-          'https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=6556',
-          'https://ecn.t1.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=6556',
-          'https://ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=6556',
-          'https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=6556',
-        ]
+      if (bing.getTiles('bing_satellite')) {
+        data.tiles = bing.getTiles('bing_satellite')
 
         resolve(data)
+      } else {
+        bing.fetchSource('Aerial').then(tiles => {
+          data.tiles = bing.setTiles('bing_satellite', tiles)
+
+          resolve(data)
+        })
       }
     })
   },
@@ -122,27 +109,16 @@ const api = {
         tileSize: 256,
       }
 
-      if (JSON.parse(LOAD_ASYNC)) {
-        if (bing.getTiles('bing_hybrid')) {
-          data.tiles = bing.getTiles('bing_hybrid')
-
-          resolve(data)
-        } else {
-          bing.fetchSource('AerialWithLabels').then(tiles => {
-            data.tiles = bing.setTiles('bing_hybrid', tiles)
-
-            resolve(data)
-          })
-        }
-      } else {
-        data.tiles = [
-          'https://ecn.t0.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=6556&mkt=en-US',
-          'https://ecn.t1.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=6556&mkt=en-US',
-          'https://ecn.t2.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=6556&mkt=en-US',
-          'https://ecn.t3.tiles.virtualearth.net/tiles/h{quadkey}.jpeg?g=6556&mkt=en-US',
-        ]
+      if (bing.getTiles('bing_hybrid')) {
+        data.tiles = bing.getTiles('bing_hybrid')
 
         resolve(data)
+      } else {
+        bing.fetchSource('AerialWithLabels').then(tiles => {
+          data.tiles = bing.setTiles('bing_hybrid', tiles)
+
+          resolve(data)
+        })
       }
     })
   },
@@ -155,27 +131,16 @@ const api = {
         tileSize: 256,
       }
 
-      if (JSON.parse(LOAD_ASYNC)) {
-        if (bing.getTiles('bing_streets')) {
-          data.tiles = bing.getTiles('bing_streets')
-
-          resolve(data)
-        } else {
-          bing.fetchSource('Road').then(tiles => {
-            data.tiles = bing.setTiles('bing_streets', tiles)
-
-            resolve(data)
-          })
-        }
-      } else {
-        data.tiles = [
-          'https://ecn.t0.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=6556&mkt=en-US&shading=hill',
-          'https://ecn.t1.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=6556&mkt=en-US&shading=hill',
-          'https://ecn.t2.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=6556&mkt=en-US&shading=hill',
-          'https://ecn.t3.tiles.virtualearth.net/tiles/r{quadkey}.jpeg?g=6556&mkt=en-US&shading=hill',
-        ]
+      if (bing.getTiles('bing_streets')) {
+        data.tiles = bing.getTiles('bing_streets')
 
         resolve(data)
+      } else {
+        bing.fetchSource('Road').then(tiles => {
+          data.tiles = bing.setTiles('bing_streets', tiles)
+
+          resolve(data)
+        })
       }
     })
   },

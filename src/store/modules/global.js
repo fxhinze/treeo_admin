@@ -6,6 +6,7 @@ export const getters = {
 }
 
 export const state = {
+  // sidebarVisibility: null
   sidebarVisibility: true,
   cachedViews: [],
   cacheGroup: null,

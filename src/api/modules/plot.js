@@ -72,6 +72,10 @@ export default {
   },
 
   generatePolygon (params = {}) {
+    return service.post('/plot/generatepolygon', params)
+  },
+
+  forcePolygon (params = {}) {
     return service.post('/plot/forceplotpolygon', params)
   },
 

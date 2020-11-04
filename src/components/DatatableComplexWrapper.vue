@@ -4,6 +4,7 @@
     :create-btn="titleCreateItem"
     :title="title"
     :hide-action-chart="!!chartComponent"
+    :hide-action-download="!!downloadComponent"
     fixed-header
     hide-action-menu
     @fetchData="refresh => fetchData(refresh)"
@@ -12,6 +13,7 @@
     @action:delete="id => onDelete(id)"
     @action:forward="id => onForward(id)"
     @action:chart="() => onChart()"
+    @action:download="() => onDownload()"
   >
     <template slot="popups">
       <popup-component
@@ -54,6 +56,22 @@
           :is="chartComponent"
           :filter="datatable.filter"
           @action:close="chartPopup = false"
+        />
+      </popup-component>
+
+      <popup-component
+        title="Download csv"
+        cancel-label="Cancel"
+        confirm-label="Download"
+        v-model="downloadPopup"
+        max-width="400"
+        @action:confirm="$refs.download.download()"
+      >
+        <component
+          ref="download"
+          :is="downloadComponent"
+          :query="datatable.getQueryApi()"
+          @action:close="downloadPopup = false"
         />
       </popup-component>
     </template>
@@ -117,6 +135,10 @@ export default {
     chartComponent: {
       default: null,
     },
+
+    downloadComponent: {
+      default: null,
+    },
   },
 
   components: {
@@ -129,6 +151,7 @@ export default {
       editPopup: null,
       deletePopup: null,
       chartPopup: null,
+      downloadPopup: null,
       itemId: null,
     }
   },
@@ -251,6 +274,10 @@ export default {
 
     onChart (payload = {}) {
       this.chartPopup = true
+    },
+
+    onDownload (payload = {}) {
+      this.downloadPopup = true
     },
   }
 }

@@ -76,17 +76,19 @@ export default {
   methods: {
     submit () {
       if (this.$refs.form.validate()) {
-        this.tryToLogIn()
+        this.tryTo()
       }
     },
 
-    tryToLogIn () {
+    tryTo () {
       this.tryingToLogIn = true
       this.error = null
 
+      const baseUrl = window.location.protocol + '//' + window.location.host
+
       return api.auth.lostPassword({
         email: this.email,
-        reseturl: `${process.env.VUE_APP_BASE_URL}/reset-password`,
+        reseturl: `${baseUrl}/reset-password`,
       })
         .then(user => {
           this.tryingToLogIn = false
