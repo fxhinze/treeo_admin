@@ -15,7 +15,7 @@
     "@mapbox/mapbox-gl-draw": "^1.2.0",
     "@turf/helpers": "^6.1.4",
     "@turf/turf": "^5.1.6",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "cuid": "^2.1.8",
     "lodash": "^4.17.20",
     "mapbox-gl": "^1.12.0",
